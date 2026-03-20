@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作業管理系統</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-box">
+            <h1>📚 作業管理系統</h1>
+
+            <!-- 登入表單 -->
+            <div id="loginForm" class="form-container active">
+                <h2>登入</h2>
+                <form id="login">
+                    <div class="form-group">
+                        <label for="loginUserId">帳號</label>
+                        <input type="text" id="loginUserId" required placeholder="請輸入帳號">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">密碼</label>
+                        <input type="password" id="loginPassword" required placeholder="請輸入密碼">
+                    </div>
+                    <button type="submit" class="btn btn-primary">登入</button>
+                    <p class="switch-form">還沒有帳號？<a href="#" id="showRegister">立即註冊</a></p>
+                </form>
+            </div>
+
+            <!-- 註冊表單 -->
+            <div id="registerForm" class="form-container">
+                <h2>註冊</h2>
+                <form id="register">
+                    <div class="form-group">
+                        <label for="registerRole">身份</label>
+                        <select id="registerRole">
+                            <option value="student">學生</option>
+                            <option value="teacher">教師</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="inviteCodeGroup" style="display:none">
+                        <label for="registerInviteCode">教師邀請碼</label>
+                        <input type="text" id="registerInviteCode" placeholder="請輸入教師邀請碼">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerUserId">帳號（學號或教師代號）</label>
+                        <input type="text" id="registerUserId" required placeholder="請輸入帳號">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerName">姓名</label>
+                        <input type="text" id="registerName" required placeholder="請輸入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">密碼</label>
+                        <input type="password" id="registerPassword" required placeholder="請輸入密碼（至少6個字元）">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">確認密碼</label>
+                        <input type="password" id="registerConfirmPassword" required placeholder="請再次輸入密碼">
+                    </div>
+                    <button type="submit" class="btn btn-primary">註冊</button>
+                    <p class="switch-form">已有帳號？<a href="#" id="showLogin">立即登入</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

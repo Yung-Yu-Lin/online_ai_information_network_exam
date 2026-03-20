@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作業管理系統</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1>📚 作業管理系統</h1>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <span id="userRoleBadge" class="role-badge"></span>
+                <button id="logoutBtn" class="btn btn-secondary">登出</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard">
+
+        <!-- ==================== 學生視圖 ==================== -->
+        <div id="studentView" style="display:none">
+            <div class="welcome-section">
+                <h2>歡迎，<span id="studentWelcomeName"></span>！</h2>
+                <p>學號：<span id="studentWelcomeId"></span></p>
+            </div>
+
+            <!-- 章節作業列表 -->
+            <div id="studentChapterSection" class="assignments-section">
+                <h3 class="section-title">📋 章節作業</h3>
+                <div id="studentChapterList"></div>
+            </div>
+
+            <!-- 作答區域（動態顯示） -->
+            <div id="assignmentContainer" style="display:none"></div>
+
+            <!-- 查看繳交記錄（動態顯示） -->
+            <div id="submissionViewContainer" style="display:none"></div>
+        </div>
+
+        <!-- ==================== 教師視圖 ==================== -->
+        <div id="teacherView" style="display:none">
+            <div class="welcome-section">
+                <h2>教師儀表板</h2>
+            </div>
+
+            <!-- 頁籤導航 -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="chapters">📖 章節管理</button>
+                <button class="tab-btn" data-tab="grading">📝 作業批改</button>
+            </div>
+
+            <!-- ===== 章節管理頁籤 ===== -->
+            <div id="chaptersTab" class="tab-content active">
+                <div class="section-header">
+                    <h3>章節列表</h3>
+                </div>
+                <!-- 新增章節表單 -->
+                <div class="add-form-card">
+                    <h4>新增章節</h4>
+                    <div class="form-row">
+                        <input type="number" id="newChapterOrder" placeholder="排序編號" style="max-width:120px">
+                        <input type="text" id="newChapterTitle" placeholder="章節名稱">
+                        <button class="btn btn-primary" onclick="addChapter()">新增</button>
+                    </div>
+                </div>
+                <div id="chapterList"></div>
+
+                <!-- 題目管理（選擇章節後顯示） -->
+                <div id="questionManager" style="display:none">
+                    <div class="section-header" style="margin-top:2rem">
+                        <h3>題目管理 — <span id="selectedChapterTitle"></span></h3>
+                        <button class="btn btn-secondary btn-small" onclick="closeQuestionManager()">返回章節列表</button>
+                    </div>
+
+                    <!-- 新增題目表單 -->
+                    <div class="add-form-card">
+                        <h4>新增題目</h4>
+                        <div class="form-group">
+                            <label>題目類型</label>
+                            <select id="questionType" onchange="updateQuestionFormType()">
+                                <option value="single">單選題</option>
+                                <option value="multiple">多選題</option>
+                                <option value="short_answer">簡答題</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>題目內容</label>
+                            <textarea id="questionText" rows="3" placeholder="請輸入題目內容"></textarea>
+                        </div>
+                        <div id="optionsFormSection">
+                            <label>選項（✔ 標記正確答案）</label>
+                            <div id="optionInputsList"></div>
+                            <button class="btn btn-secondary btn-small" onclick="addOptionInput()" style="margin-top:0.5rem">＋ 新增選項</button>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveQuestion()" style="margin-top:1rem">儲存題目</button>
+                    </div>
+
+                    <div id="questionList"></div>
+                </div>
+            </div>
+
+            <!-- ===== 作業批改頁籤 ===== -->
+            <div id="gradingTab" class="tab-content">
+                <div class="form-group">
+                    <label>選擇章節</label>
+                    <select id="gradingChapterSelect">
+                        <option value="">-- 請選擇章節 --</option>
+                    </select>
+                </div>
+                <div id="submissionsList"></div>
+
+                <!-- 批改詳情 -->
+                <div id="gradingDetail" style="display:none">
+                    <div class="grading-header">
+                        <h3>批改作業 — <span id="gradingStudentName"></span></h3>
+                        <p id="gradingCurrentStatus"></p>
+                    </div>
+                    <div id="gradingAnswers"></div>
+                    <div class="grading-actions-box">
+                        <div class="form-group">
+                            <label>老師備註</label>
+                            <textarea id="teacherNote" rows="3" placeholder="留下備註訊息給學生..."></textarea>
+                        </div>
+                        <div class="grading-buttons">
+                            <button class="btn btn-success" onclick="setGradeStatus('graded')">✔ 批改完成</button>
+                            <button class="btn btn-danger" onclick="setGradeStatus('returned')">✘ 退回重做</button>
+                            <button class="btn btn-secondary" onclick="deleteSubmission()">🗑️ 刪除繳交紀錄</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

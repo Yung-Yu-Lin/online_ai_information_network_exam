@@ -1,0 +1,436 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* ==================== 導航欄 ==================== */
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar h1 { color: #667eea; font-size: 1.5rem; }
+.nav-user { display: flex; align-items: center; gap: 1rem; }
+.nav-user span { font-weight: 500; }
+
+/* 角色徽章 */
+.role-badge {
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.role-teacher { background-color: #fef9e7; color: #f39c12; }
+.role-student { background-color: #ebf5fb; color: #3498db; }
+
+/* ==================== 容器 ==================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ==================== 認證頁面 ==================== */
+.auth-box {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 2.5rem;
+    max-width: 450px;
+    margin: 4rem auto;
+}
+.auth-box h1 { text-align: center; color: #667eea; margin-bottom: 2rem; font-size: 1.8rem; }
+.form-container { display: none; }
+.form-container.active { display: block; animation: fadeIn 0.3s ease-in; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.form-container h2 { color: #333; margin-bottom: 1.5rem; text-align: center; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; color: #555; font-weight: 500; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { outline: none; border-color: #667eea; }
+
+/* ==================== 按鈕 ==================== */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+.btn-primary { background-color: #667eea; color: white; width: 100%; }
+.btn-primary:hover { background-color: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-success { background-color: #27ae60; color: white; }
+.btn-success:hover { background-color: #229954; }
+.btn-danger { background-color: #e74c3c; color: white; }
+.btn-danger:hover { background-color: #c0392b; }
+.btn-small { padding: 0.4rem 0.8rem; font-size: 0.85rem; width: auto; }
+.btn-large { width: 100%; padding: 1rem 2rem; font-size: 1.1rem; margin-top: 1rem; }
+.btn-icon {
+    background: none; border: none; cursor: pointer; font-size: 1.1rem;
+    padding: 0.2rem 0.4rem; border-radius: 4px; transition: background 0.2s;
+}
+.btn-icon:hover { background-color: #f0f0f0; }
+.btn-delete { color: #e74c3c; }
+
+.switch-form { text-align: center; margin-top: 1.5rem; color: #666; }
+.switch-form a { color: #667eea; text-decoration: none; font-weight: 500; }
+.switch-form a:hover { text-decoration: underline; }
+
+/* ==================== Dashboard 通用 ==================== */
+.dashboard { background-color: transparent; }
+
+.welcome-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.welcome-section h2 { color: #667eea; margin-bottom: 0.5rem; }
+
+.assignments-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.section-title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #667eea;
+    font-size: 1.3rem;
+    color: #667eea;
+}
+
+/* ==================== 作業卡片 ==================== */
+.assignment-card {
+    background-color: #f8f9fa;
+    border-left: 4px solid #667eea;
+    border-radius: 5px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+.assignment-card:hover { transform: translateX(5px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.assignment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+.assignment-title { font-size: 1.1rem; font-weight: 600; color: #333; }
+.assignment-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.assignment-actions { margin-top: 0.75rem; display: flex; gap: 0.5rem; }
+
+/* 老師備註 */
+.teacher-note {
+    background-color: #fff3cd;
+    border-left: 3px solid #f39c12;
+    padding: 0.6rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #856404;
+}
+.teacher-note-box {
+    background-color: #fff3cd;
+    border-left: 4px solid #f39c12;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    color: #856404;
+}
+
+/* ==================== 頁籤 ==================== */
+.tab-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 0;
+    background-color: white;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background-color: #f0f0f0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #666;
+}
+.tab-btn.active { background-color: white; color: #667eea; border-bottom: 3px solid #667eea; }
+.tab-btn:hover:not(.active) { background-color: #e8e8e8; }
+.tab-content {
+    display: none;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.tab-content.active { display: block; }
+
+/* ==================== 章節管理 ==================== */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.section-header h3 { color: #667eea; font-size: 1.3rem; }
+
+.add-form-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px dashed #ccc;
+}
+.add-form-card h4 { color: #555; margin-bottom: 1rem; }
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.form-row input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+.form-row input:focus { outline: none; border-color: #667eea; }
+.form-row button { flex-shrink: 0; width: auto; }
+
+.chapter-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem 1.25rem;
+    border-radius: 5px;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid #667eea;
+    transition: all 0.2s;
+}
+.chapter-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.chapter-info { display: flex; align-items: center; gap: 1rem; }
+.chapter-order { color: #999; font-weight: bold; font-size: 0.9rem; }
+.chapter-title { font-weight: 600; }
+.chapter-actions { display: flex; gap: 0.5rem; }
+
+/* ==================== 題目管理 ==================== */
+.option-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.option-input-row input[type="text"] {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+.option-input-row input[type="text"]:focus { outline: none; border-color: #667eea; }
+.option-input-row input[type="radio"],
+.option-input-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.option-preview {
+    padding: 0.4rem 0.75rem;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+}
+.correct-preview {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 3px solid #27ae60;
+}
+
+.question-header-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.type-note { color: #888; font-style: italic; font-size: 0.9rem; }
+
+/* ==================== 測驗/作答系統 ==================== */
+.exam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+.exam-header h3 { color: #667eea; font-size: 1.5rem; }
+
+.question-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #667eea;
+}
+.question-card.answered { border-left-color: #27ae60; }
+.question-number { color: #667eea; font-weight: bold; font-size: 1.1rem; margin-bottom: 0.75rem; }
+.question-text { font-size: 1.05rem; color: #333; margin-bottom: 1rem; line-height: 1.6; }
+.question-type-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: #e8edff;
+    color: #667eea;
+    margin-left: 0.5rem;
+}
+
+.options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+.option-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.option-item:hover { border-color: #667eea; background-color: #f0f4ff; }
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] { margin-right: 0.75rem; cursor: pointer; width: 18px; height: 18px; }
+.option-item label { cursor: pointer; flex: 1; font-size: 1rem; }
+.option-item.selected { border-color: #667eea; background-color: #e8edff; }
+.option-item.correct { border-color: #27ae60; background-color: #e8f8f0; }
+.option-item.incorrect { border-color: #e74c3c; background-color: #fef0ef; }
+.option-item.faded { opacity: 0.6; }
+
+.answer-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+}
+.answer-textarea:focus { outline: none; border-color: #667eea; }
+
+.student-answer-text {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.exam-actions { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+/* ==================== 繳交記錄 / 批改 ==================== */
+.submission-card {
+    background-color: #f8f9fa;
+    border-left: 4px solid #667eea;
+    border-radius: 5px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+.submission-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.submission-info { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.student-name { font-weight: 600; font-size: 1.05rem; }
+.student-id-label { color: #888; font-size: 0.9rem; }
+.submission-time { color: #999; font-size: 0.85rem; margin-bottom: 0.75rem; }
+
+.grading-header { margin-bottom: 1.5rem; }
+.grading-header h3 { color: #667eea; margin-bottom: 0.5rem; }
+.grading-actions-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid #e0e0e0;
+}
+.grading-buttons { display: flex; gap: 1rem; margin-top: 1rem; }
+.grading-buttons .btn { flex: 1; }
+
+/* ==================== 雜項 ==================== */
+.loading { text-align: center; color: #999; padding: 2rem; }
+.empty-message { text-align: center; color: #999; padding: 2rem; font-style: italic; }
+.error-message { text-align: center; color: #e74c3c; padding: 2rem; }
+
+#assignmentContainer,
+#submissionViewContainer {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* ==================== 響應式設計 ==================== */
+@media (max-width: 768px) {
+    .auth-box { margin: 2rem 1rem; padding: 1.5rem; }
+    .nav-container { flex-direction: column; gap: 1rem; text-align: center; }
+    .form-row { flex-direction: column; }
+    .form-row button { width: 100%; }
+    .chapter-card { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .chapter-actions { width: 100%; }
+    .grading-buttons { flex-direction: column; }
+    .tab-btn { font-size: 0.85rem; padding: 0.75rem 0.5rem; }
+    .submission-info { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .option-input-row { flex-wrap: wrap; }
+}

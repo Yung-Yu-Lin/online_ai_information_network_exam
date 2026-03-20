@@ -1,0 +1,43 @@
+# 如何更新題目
+
+題目現在直接儲存在 `dashboard.js` 檔案中。
+
+## 更新題目步驟
+
+1. 用文字編輯器（如 Notepad++、VS Code）開啟 `dashboard.js`
+2. 找到 `const questionsData = [` 這一行
+3. 按照以下格式新增或修改題目：
+
+```javascript
+{
+    question: "你的題目？",
+    options: ["選項1", "選項2", "選項3", "選項4"],
+    correctAnswer: 0  // 0=選項1, 1=選項2, 2=選項3, 3=選項4
+}
+```
+
+## 範例
+
+新增一題：
+```javascript
+const questionsData = [
+    // 原有的題目...
+    {
+        question: "下列何者是程式語言？",
+        options: ["Photoshop", "Python", "Word", "Excel"],
+        correctAnswer: 1  // Python 是選項2（索引從0開始，所以是1）
+    },
+    // 在這裡新增更多題目
+];
+```
+
+## 注意事項
+
+1. **逗號**: 每個題目之間要用逗號 `,` 分隔（最後一題除外）
+2. **索引**: `correctAnswer` 使用 0-3 的數字（0=第1個選項，1=第2個選項...）
+3. **引號**: 題目和選項要用引號 `"` 包起來
+4. **測試**: 修改後重新整理網頁測試
+
+## 快速使用
+
+現在可以直接**雙擊 `index.html`** 開啟測驗系統，不需要啟動伺服器！
