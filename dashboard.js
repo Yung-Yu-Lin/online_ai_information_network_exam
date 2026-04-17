@@ -14,6 +14,18 @@ let currentAssignmentChapterId = null;
 let currentAssignmentQuestions = null;
 const studentAnswers = {};
 
+// 防止複製題目與答案
+['assignmentContainer', 'submissionViewContainer'].forEach(id => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('copy', e => e.preventDefault());
+        el.addEventListener('cut', e => e.preventDefault());
+        el.addEventListener('contextmenu', e => e.preventDefault());
+        el.addEventListener('dragstart', e => e.preventDefault());
+    });
+});
+
 // ============================================================
 // 身份驗證
 // ============================================================
