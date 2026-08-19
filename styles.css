@@ -260,6 +260,18 @@ body {
 .chapter-order { color: #999; font-weight: bold; font-size: 0.9rem; }
 .chapter-title { font-weight: 600; }
 .chapter-actions { display: flex; gap: 0.5rem; }
+.chapter-open-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.chapter-open-badge.open { background-color: #eafaf1; color: #27ae60; }
+.chapter-open-badge.closed { background-color: #f2f3f4; color: #95a5a6; }
+
+.assignment-card-locked { opacity: 0.75; }
+.assignment-locked-note { color: #95a5a6; font-size: 0.9rem; }
 
 /* ==================== 題目管理 ==================== */
 .option-input-row {

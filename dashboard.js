@@ -124,12 +124,15 @@ async function loadStudentChapters() {
         chapters.sort((a, b) => (a.order || 0) - (b.order || 0));
 
         for (const ch of chapters) {
+            const isOpen = !!ch.isOpen;
             const subSnap = await database.ref(`submissions/${ch.id}/${currentUser.uid}`).once('value');
             const sub = subSnap.val();
-            const si = getStatusInfo(sub?.status);
+            const si = isOpen ? getStatusInfo(sub?.status) : { text: '🔒 尚未開放', color: '#95a5a6', bg: '#f2f3f4' };
 
             let actionBtn = '';
-            if (!sub || sub.status === 'returned') {
+            if (!isOpen) {
+                actionBtn = `<span class="assignment-locked-note">此章節目前尚未開放，請等待老師開放後再作答</span>`;
+            } else if (!sub || sub.status === 'returned') {
                 const label = sub?.status === 'returned' ? '重新作答' : '開始作答';
                 actionBtn = `<button class="btn btn-primary btn-small" onclick="startAssignment('${ch.id}')">${label}</button>`;
             } else {
@@ -137,12 +140,12 @@ async function loadStudentChapters() {
             }
 
             let noteHtml = '';
-            if (sub?.teacherNote) {
+            if (isOpen && sub?.teacherNote) {
                 noteHtml = `<div class="teacher-note">📝 老師備註：${escapeHtml(sub.teacherNote)}</div>`;
             }
 
             const card = document.createElement('div');
-            card.className = 'assignment-card';
+            card.className = 'assignment-card' + (isOpen ? '' : ' assignment-card-locked');
             card.style.borderLeftColor = si.color;
             card.innerHTML = `
                 <div class="assignment-header">
@@ -162,6 +165,9 @@ async function loadStudentChapters() {
 // ---------- 開始作答 ----------
 async function startAssignment(chapterId) {
     try {
+        const openSnap = await database.ref(`chapters/${chapterId}/isOpen`).once('value');
+        if (!openSnap.val()) { alert('此章節目前尚未開放'); return; }
+
         const snap = await database.ref(`questions/${chapterId}`).once('value');
         if (!snap.exists()) { alert('此章節還沒有題目'); return; }
 
@@ -313,6 +319,7 @@ async function viewSubmission(chapterId) {
         ]);
         const sub = subSnap.val();
         const chapter = chapSnap.val();
+        if (!chapter?.isOpen) { alert('此章節目前尚未開放'); return; }
         if (!sub) { alert('找不到繳交記錄'); return; }
 
         const qMap = {};
@@ -415,14 +422,17 @@ async function loadTeacherChapters() {
         chapters.sort((a, b) => (a.order || 0) - (b.order || 0));
 
         chapters.forEach(ch => {
+            const isOpen = !!ch.isOpen;
             const card = document.createElement('div');
             card.className = 'chapter-card';
             card.innerHTML = `
                 <div class="chapter-info">
                     <span class="chapter-order">#${ch.order || 0}</span>
                     <span class="chapter-title">${escapeHtml(ch.title)}</span>
+                    <span class="chapter-open-badge ${isOpen ? 'open' : 'closed'}">${isOpen ? '🔓 開放中' : '🔒 未開放'}</span>
                 </div>
                 <div class="chapter-actions">
+                    <button class="btn ${isOpen ? 'btn-secondary' : 'btn-success'} btn-small" onclick="toggleChapterOpen('${ch.id}', ${isOpen})">${isOpen ? '設為未開放' : '設為開放'}</button>
                     <button class="btn btn-primary btn-small" onclick="manageQuestions('${ch.id}')">管理題目</button>
                     <button class="btn btn-danger btn-small" onclick="deleteChapter('${ch.id}')">刪除</button>
                 </div>`;
@@ -444,6 +454,7 @@ async function addChapter() {
     try {
         await database.ref('chapters').push().set({
             title, order,
+            isOpen: false,
             createdBy: currentUser.uid,
             createdAt: firebase.database.ServerValue.TIMESTAMP,
         });
@@ -452,6 +463,13 @@ async function addChapter() {
         await loadTeacherChapters();
         await loadGradingChapterSelect();
     } catch (err) { console.error(err); alert('新增失敗'); }
+}
+
+async function toggleChapterOpen(id, currentIsOpen) {
+    try {
+        await database.ref(`chapters/${id}/isOpen`).set(!currentIsOpen);
+        await loadTeacherChapters();
+    } catch (err) { console.error(err); alert('操作失敗'); }
 }
 
 async function deleteChapter(id) {
